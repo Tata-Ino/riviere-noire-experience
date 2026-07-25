@@ -37,9 +37,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && npm install \
     && npm run build
 
-# Étape 5 : Rendre le script d'entrée exécutable
+# Étape 5 : Rendre le script d'entrée exécutable (v3)
 RUN chmod +x entrypoint.sh
 
 EXPOSE 8000
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-8000}/ || exit 1
 
 ENTRYPOINT ["./entrypoint.sh"]

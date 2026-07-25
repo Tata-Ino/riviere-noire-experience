@@ -3,9 +3,10 @@ set -e
 
 echo "=== Riviere Noire Experience - Demarrage ==="
 
+php artisan serve --host=0.0.0.0 --port=${PORT:-8000} &
+
 php artisan key:generate --force
 php artisan storage:link --force
-
 php artisan route:cache
 php artisan view:cache
 
@@ -22,5 +23,5 @@ php artisan migrate --force
 echo "Execution des seeders..."
 php artisan db:seed --force
 
-echo "Demarrage du serveur..."
+kill %1 2>/dev/null || true
 exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
