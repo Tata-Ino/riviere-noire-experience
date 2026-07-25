@@ -17,4 +17,4 @@ echo "Execution des seeders..."
 php artisan db:seed --force
 
 echo "Demarrage du serveur..."
-exec php artisan serve --host=0.0.0.0 --port=8000
+exec php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
