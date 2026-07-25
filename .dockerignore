@@ -6,9 +6,6 @@ vendor
 .env.*
 !.env.example
 *.md
-*.jpeg
-*.png
-*.jpg
 tests
 .vscode
 .idea
