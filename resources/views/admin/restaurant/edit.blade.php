@@ -112,7 +112,7 @@
                     @else
                         <img id="coverPreview" class="mb-3 d-none" style="max-width:100%; border-radius:12px;">
                     @endif
-                    <input type="file" name="cover_image" class="form-control" accept="image/*" onchange="previewImage(this, 'coverPreview')">
+                    <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(this, 'coverPreview')">
                 </div>
             </div>
 

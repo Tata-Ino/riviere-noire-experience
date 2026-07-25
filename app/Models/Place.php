@@ -139,6 +139,20 @@ class Place extends Model
     }
 
     /**
+     * Retourner l'URL de la vidéo.
+     */
+    public function getVideoUrlAttribute(): ?string
+    {
+        if ($this->relationLoaded('media')) {
+            $video = $this->media->firstWhere('type', PlaceMedia::TYPE_VIDEO);
+            return $video?->url;
+        }
+
+        $video = $this->media()->where('type', PlaceMedia::TYPE_VIDEO)->first();
+        return $video ? $video->url : null;
+    }
+
+    /**
      * Retourner le nom traduit du lieu.
      */
     public function getNameAttribute(): ?string

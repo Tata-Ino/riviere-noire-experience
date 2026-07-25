@@ -64,7 +64,7 @@ class RestaurantController extends Controller
 
         $validated = $request->validate([
             'place_id' => 'required|exists:places,id',
-            'opening_hours' => 'nullable|array',
+            'opening_hours' => 'nullable|string|max:255',
             'status' => 'required|in:active,inactive',
             'translations' => 'required|array',
             'translations.*.name' => 'required|string|max:255',
@@ -143,7 +143,7 @@ class RestaurantController extends Controller
 
         $validated = $request->validate([
             'place_id' => 'required|exists:places,id',
-            'opening_hours' => 'nullable|array',
+            'opening_hours' => 'nullable|string|max:255',
             'status' => 'required|in:active,inactive',
             'translations' => 'required|array',
             'translations.*.name' => 'required|string|max:255',

@@ -169,8 +169,8 @@ class ExcursionController extends Controller
         $validated = $request->validate([
             'place_id' => 'required|exists:places,id',
             'slug' => 'required|string|max:255|unique:excursions,slug,' . $excursion->id,
-            'price' => 'required|numeric|min:0',
-            'duration_minutes' => 'required|integer|min:1',
+            'price' => 'nullable|numeric|min:0',
+            'duration_minutes' => 'nullable|integer|min:1',
             'status' => 'required|in:active,inactive',
             'position' => 'nullable|integer|min:0',
             'translations' => 'required|array',

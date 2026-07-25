@@ -108,6 +108,20 @@ class Excursion extends Model
     }
 
     /**
+     * Retourner l'URL de la vidéo.
+     */
+    public function getVideoUrlAttribute(): ?string
+    {
+        if ($this->relationLoaded('media')) {
+            $video = $this->media->firstWhere('type', 'video');
+            return $video?->url;
+        }
+
+        $video = $this->media()->where('type', 'video')->first();
+        return $video ? $video->url : null;
+    }
+
+    /**
      * Retourner le nom traduit de l'excursion.
      */
     public function getNameAttribute(): ?string

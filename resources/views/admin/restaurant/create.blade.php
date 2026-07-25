@@ -103,7 +103,7 @@
                     <h6 class="fw-bold mb-0" style="font-size:0.9rem;"><i class="bi bi-image me-2" style="color:var(--bleu-profond);"></i>Image de couverture</h6>
                 </div>
                 <div class="card-body">
-                    <input type="file" name="cover_image" class="form-control" accept="image/*" onchange="previewImage(this, 'coverPreview')">
+                    <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(this, 'coverPreview')">
                     <img id="coverPreview" class="mt-3 d-none" style="max-width:100%; border-radius:12px;">
                 </div>
             </div>

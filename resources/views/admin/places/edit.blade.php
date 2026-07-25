@@ -87,7 +87,7 @@
                         <input type="number" name="price" class="form-control" value="{{ old('price', $place->price) }}" min="0" step="100">
                     </div>
                     <div class="mb-3 form-check form-switch">
-                        <input type="checkbox" name="featured" class="form-check-input" id="featured" {{ old('featured', $place->featured) ? 'checked' : '' }}>
+                        <input type="checkbox" name="is_featured" class="form-check-input" id="featured" {{ old('is_featured', $place->is_featured) ? 'checked' : '' }}>
                         <label class="form-check-label fw-bold" for="featured">À la une</label>
                     </div>
                     <div class="mb-3">
@@ -110,7 +110,7 @@
                     @else
                         <img id="coverPreview" class="mb-3 d-none" style="max-width:100%; border-radius:12px;">
                     @endif
-                    <input type="file" name="cover_image" class="form-control" accept="image/*" onchange="previewImage(this, 'coverPreview')">
+                    <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(this, 'coverPreview')">
                 </div>
             </div>
 
