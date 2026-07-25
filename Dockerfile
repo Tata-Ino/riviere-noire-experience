@@ -19,14 +19,9 @@ RUN apt-get update && apt-get install -y \
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Installer Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm
-
 WORKDIR /app
 
-# Étape 1 : Installer les dépendances PHP (mise en cache)
+# Étape 1 : Copier composer.json et installer les dépendances PHP
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-scripts --no-autoloader
 
@@ -36,8 +31,11 @@ COPY . .
 # Étape 3 : Générer l'autoloader optimisé
 RUN composer dump-autoload --optimize --no-dev
 
-# Étape 4 : Installer les dépendances Node et builder les assets
-RUN npm install && npm run build
+# Étape 4 : Installer Node.js, les dépendances Node et builder les assets
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install \
+    && npm run build
 
 # Étape 5 : Rendre le script d'entrée exécutable
 RUN chmod +x entrypoint.sh
