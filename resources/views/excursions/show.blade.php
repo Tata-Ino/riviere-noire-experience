@@ -36,7 +36,7 @@
     <section class="pb-5">
         <div class="container">
             @if($excursion->cover_image)
-                <img src="{{ Storage::url($excursion->cover_image) }}" alt="{{ $excursion->name }}" style="width:100%; max-height:400px; object-fit:cover; border-radius:20px; display:block;">
+                <img src="{{ asset('storage/' . $excursion->cover_image) }}" alt="{{ $excursion->name }}" style="width:100%; max-height:400px; object-fit:cover; border-radius:20px; display:block;">
             @else
                 <div class="gradient-placeholder" style="min-height: 400px; border-radius: 20px;">
                     <i class="bi bi-compass" style="font-size: 5rem;"></i>
