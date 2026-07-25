@@ -18,6 +18,9 @@ use App\Http\Controllers\Admin\SiteContactController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 
+// Healthcheck
+Route::get('/health', fn() => response('OK', 200));
+
 // Changement de langue
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])
     ->name('language.switch');
