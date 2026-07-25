@@ -35,23 +35,8 @@
     {{-- Cover Image --}}
     <section class="pb-5">
         <div class="container">
-            @php
-                $excImages = [
-                    'balade-en-pirogue' => 'image_riviere_noire2.jpeg',
-                    'atelier-vannerie' => 'atelier_de_vanerie.jpeg',
-                    'observation-ornithologique' => 'visite_Ornithologique.jpeg',
-                    'atelier-tambours' => 'atelier_de_tambour.jpeg',
-                    'fabrication-sodabi' => 'fabrication_de_sodabi.jpeg',
-                    'musee-honme-palais-royal' => 'palais-honme.jpeg',
-                    'musee-des-masques' => 'musee-des-masques.jpeg',
-                    'quartier-afro-bresilien-musee-da-silva' => 'musee-da-silva.jpeg',
-                    'jardin-des-plantes-et-de-la-nature' => 'jpn.jpeg',
-                    'temple-vodoun-abessan' => 'place-vodun-abessan4.jpg',
-                ];
-                $excSlug = $excursion->slug ?? '';
-            @endphp
-            @if(isset($excImages[$excSlug]))
-                <img src="{{ asset('images/' . $excImages[$excSlug]) }}" alt="{{ $excursion->name }}" style="width:100%; max-height:400px; object-fit:cover; border-radius:20px; display:block;">
+            @if($excursion->cover_image)
+                <img src="{{ Storage::url($excursion->cover_image) }}" alt="{{ $excursion->name }}" style="width:100%; max-height:400px; object-fit:cover; border-radius:20px; display:block;">
             @else
                 <div class="gradient-placeholder" style="min-height: 400px; border-radius: 20px;">
                     <i class="bi bi-compass" style="font-size: 5rem;"></i>
