@@ -561,18 +561,12 @@
 
 {{-- ═══ Main Content ═══ --}}
 <main class="main-content">
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius:14px; border:none; background:rgba(46,125,50,0.08); color:var(--vert-foret); font-weight:500; font-size:0.9rem;">
-            <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" style="filter:none;"></button>
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius:14px; border:none; background:rgba(239,68,68,0.08); color:#dc2626; font-weight:500; font-size:0.9rem;">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" style="filter:none;"></button>
-        </div>
-    @endif
+@if(session('success'))
+    <div id="flash-success" data-message="{{ session('success') }}" style="display:none;"></div>
+@endif
+@if(session('error'))
+    <div id="flash-error" data-message="{{ session('error') }}" style="display:none;"></div>
+@endif
     @yield('content')
 </main>
 
@@ -602,6 +596,24 @@
     </div>
 </nav>
 
+<div class="modal fade" id="flashModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border:none; border-radius:18px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.15);">
+            <div class="modal-body text-center p-5">
+                <div id="flashModalIcon" class="mb-3"></div>
+                <h5 id="flashModalTitle" class="fw-bold mb-2" style="font-size:1.2rem;"></h5>
+                <p id="flashModalMessage" class="mb-0" style="font-size:0.95rem; color:#555;"></p>
+            </div>
+            <div class="px-4 pb-4">
+                <div class="progress" style="height:6px; border-radius:10px; background:#e9ecef;">
+                    <div id="flashModalProgress" class="progress-bar" role="progressbar" style="width:100%; border-radius:10px; transition:width 0.1s linear;"></div>
+                </div>
+                <small id="flashModalTimer" class="text-muted d-block mt-2" style="font-size:0.8rem;"></small>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -616,6 +628,54 @@
         sidebar.classList.remove('show');
         backdrop.classList.remove('show');
     });
+
+    (function() {
+        var successEl = document.getElementById('flash-success');
+        var errorEl = document.getElementById('flash-error');
+        if (!successEl && !errorEl) return;
+
+        var isError = !!errorEl;
+        var message = isError ? errorEl.dataset.message : successEl.dataset.message;
+        var modal = new bootstrap.Modal(document.getElementById('flashModal'));
+
+        var iconEl = document.getElementById('flashModalIcon');
+        var titleEl = document.getElementById('flashModalTitle');
+        var msgEl = document.getElementById('flashModalMessage');
+        var progressEl = document.getElementById('flashModalProgress');
+        var timerEl = document.getElementById('flashModalTimer');
+
+        if (isError) {
+            iconEl.innerHTML = '<div style="width:64px;height:64px;border-radius:50%;background:rgba(239,68,68,0.1);display:inline-flex;align-items:center;justify-content:center;"><i class="bi bi-exclamation-triangle-fill" style="font-size:2rem;color:#dc2626;"></i></div>';
+            titleEl.textContent = 'Erreur';
+            titleEl.style.color = '#dc2626';
+            progressEl.style.background = '#dc2626';
+        } else {
+            iconEl.innerHTML = '<div style="width:64px;height:64px;border-radius:50%;background:rgba(46,125,50,0.1);display:inline-flex;align-items:center;justify-content:center;"><i class="bi bi-check-circle-fill" style="font-size:2rem;color:var(--vert-foret);"></i></div>';
+            titleEl.textContent = 'Succès';
+            titleEl.style.color = 'var(--vert-foret)';
+            progressEl.style.background = 'var(--vert-foret)';
+        }
+
+        msgEl.textContent = message;
+        modal.show();
+
+        var duration = 5000;
+        var start = Date.now();
+        var remaining = duration;
+
+        function tick() {
+            remaining = duration - (Date.now() - start);
+            if (remaining <= 0) {
+                modal.hide();
+                return;
+            }
+            var pct = (remaining / duration) * 100;
+            progressEl.style.width = pct + '%';
+            timerEl.textContent = (remaining / 1000).toFixed(1) + 's';
+            requestAnimationFrame(tick);
+        }
+        tick();
+    })();
 </script>
 @stack('scripts')
 </body>
