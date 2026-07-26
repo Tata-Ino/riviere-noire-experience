@@ -83,7 +83,7 @@
                         <input type="number" name="price" class="form-control" value="{{ old('price') }}" min="0" step="100">
                     </div>
                     <div class="mb-3 form-check form-switch">
-                        <input type="checkbox" name="is_featured" class="form-check-input" id="featured" {{ old('is_featured') ? 'checked' : '' }}>
+                        <input type="checkbox" name="is_featured" value="1" class="form-check-input" id="featured" {{ old('is_featured') ? 'checked' : '' }}>
                         <label class="form-check-label fw-bold" for="featured">À la une</label>
                     </div>
                     <div class="mb-3">
