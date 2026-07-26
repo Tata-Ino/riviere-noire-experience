@@ -145,8 +145,8 @@ class RestaurantController extends Controller
             'place_id' => 'required|exists:places,id',
             'opening_hours' => 'nullable|string|max:255',
             'status' => 'required|in:active,inactive',
-            'translations' => 'required|array',
-            'translations.*.name' => 'required|string|max:255',
+            'translations' => 'nullable|array',
+            'translations.*.name' => 'nullable|string|max:255',
             'translations.*.description' => 'nullable|string',
             'image' => 'nullable|image|max:5120',
         ]);
@@ -161,16 +161,19 @@ class RestaurantController extends Controller
             ]);
 
             // Mettre à jour ou créer les traductions
-            foreach ($validated['translations'] as $locale => $data) {
-                $language = Language::where('code', $locale)->first();
-                if ($language) {
-                    $restaurant->translations()->updateOrCreate(
-                        ['language_id' => $language->id],
-                        [
-                            'name' => $data['name'],
-                            'description' => $data['description'] ?? null,
-                        ]
-                    );
+            if (!empty($validated['translations'])) {
+                foreach ($validated['translations'] as $locale => $data) {
+                    if (empty($data['name'])) continue;
+                    $language = Language::where('code', $locale)->first();
+                    if ($language) {
+                        $restaurant->translations()->updateOrCreate(
+                            ['language_id' => $language->id],
+                            [
+                                'name' => $data['name'],
+                                'description' => $data['description'] ?? null,
+                            ]
+                        );
+                    }
                 }
             }
 

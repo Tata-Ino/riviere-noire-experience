@@ -54,7 +54,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Nom ({{ strtoupper($locale) }}) *</label>
                                     <input type="text" name="translations[{{ $locale }}][name]" class="form-control"
-                                        value="{{ old("translations.{$locale}.name", $translation->name ?? '') }}" required
+                                        value="{{ old("translations.{$locale}.name", $translation->name ?? '') }}"
                                         oninput="if('{{ $locale }}' === 'fr') generateSlug(this.value)">
                                 </div>
                                 <div class="mb-3">

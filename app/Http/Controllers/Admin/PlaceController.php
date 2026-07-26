@@ -161,8 +161,8 @@ class PlaceController extends Controller
             'price' => 'nullable|numeric|min:0',
             'is_featured' => 'boolean',
             'status' => 'required|in:active,inactive',
-            'translations' => 'required|array',
-            'translations.*.name' => 'required|string|max:255',
+            'translations' => 'nullable|array',
+            'translations.*.name' => 'nullable|string|max:255',
             'translations.*.short_description' => 'nullable|string|max:500',
             'translations.*.description' => 'nullable|string',
             'image' => 'nullable|image|max:5120',
@@ -180,17 +180,20 @@ class PlaceController extends Controller
             ]);
 
             // Mettre à jour ou créer les traductions
-            foreach ($validated['translations'] as $locale => $data) {
-                $language = Language::where('code', $locale)->first();
-                if ($language) {
-                    $place->translations()->updateOrCreate(
-                        ['language_id' => $language->id],
-                        [
-                            'name' => $data['name'],
-                            'short_description' => $data['short_description'] ?? null,
-                            'description' => $data['description'] ?? null,
-                        ]
-                    );
+            if (!empty($validated['translations'])) {
+                foreach ($validated['translations'] as $locale => $data) {
+                    if (empty($data['name'])) continue;
+                    $language = Language::where('code', $locale)->first();
+                    if ($language) {
+                        $place->translations()->updateOrCreate(
+                            ['language_id' => $language->id],
+                            [
+                                'name' => $data['name'],
+                                'short_description' => $data['short_description'] ?? null,
+                                'description' => $data['description'] ?? null,
+                            ]
+                        );
+                    }
                 }
             }
 
